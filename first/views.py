@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 from datetime import datetime
 
@@ -17,3 +18,16 @@ def time_page(request):
         "current_time": formatted_time
     }
     return render(request, "time.html", context)
+def calc_page(request):
+    try:
+        a = int(request.GET.get('first_number', 0))
+        b = int(request.GET.get('second_number', 0))
+        answer = a + b
+        context = {
+            'first_number': a,
+            'second_number': b,
+            'answer_number': answer,
+        }
+        return render(request, 'calc.html', context)
+    except ValueError:
+        return HttpResponse("Некорректные входные данные.  Передайте целые числа для 'a' и 'b'.")

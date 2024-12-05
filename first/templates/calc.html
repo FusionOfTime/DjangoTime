@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Курс "Промышленное программирование"</title>
+</head>
+<body>
+<form method="get" action="/calc/">
+        <label for="first_number">Первое число:</label>
+        <input type="number" id="first_number" name="first_number"><br><br>
+        <label for="second_number">Второе число:</label>
+        <input type="number" id="second_number" name="second_number"><br><br>
+        <input type="submit" value="Вычислить">
+    </form>
+    <p>Результат:</p>
+    <ul>
+        <li>Первое число: {{ first_number }}</li>
+        <li>Второе число: {{ second_number }}</li>
+        <li>Сумма: {{ answer_number }}</li>
+    </ul>
+</body>
+</html>
