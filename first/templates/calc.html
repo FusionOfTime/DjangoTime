@@ -5,6 +5,15 @@
     <title>Курс "Промышленное программирование"</title>
 </head>
 <body>
+<h1>Menu</h1>
+<ol>
+    <li><a href="/"><h3>MainPage</h3></a></li>
+    <li><a href="/time/"><h3>TimePage</h3></a></li>
+     <li><a href="/calc/"><h3>CalcPage</h3></a></li>
+</ol>
+
+<hr>
+
 <form method="get" action="/calc/">
         <label for="first_number">Первое число:</label>
         <input type="number" id="first_number" name="first_number"><br><br>
@@ -18,8 +27,5 @@
         <li>Второе число: {{ second_number }}</li>
         <li>Сумма: {{ answer_number }}</li>
     </ul>
-<form action={{url_c}}>
-    <input type="submit" value="return" />
-</form>
 </body>
 </html>
