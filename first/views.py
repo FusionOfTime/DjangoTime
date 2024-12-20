@@ -1,8 +1,9 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from datetime import datetime
+import random
 
-# Create your views here.
+history = []
 
 def index_page(request):
     context = {
@@ -31,4 +32,41 @@ def calc_page(request):
         return render(request, 'calc.html', context)
     except ValueError:
         return HttpResponse("Некорректные входные данные.  Передайте целые числа для 'a' и 'b'.")
+
+
+def expression_page(request):
+    num_terms = random.randint(2, 4)
+    expression = ""
+    result = 0
+    ops = ["+", "-"]
+    for i in range(num_terms):
+        num = random.randint(10, 99)
+        if i == 0:
+            result += num
+            expression += str(num)
+        else:
+            op = random.choice(ops)
+            if op == "+":
+                result += num
+            else:
+                result -= num
+            expression += f" {op} {num}"
+
+    history.append({
+        'expression': expression,
+        'result': result
+    })
+
+    context = {
+        'expression': expression,
+        'result': result,
+    }
+    return render(request, "expression.html", context)
+
+
+def history_page(request):
+    context = {
+        'history': history,
+    }
+    return render(request, "history.html", context)
 
