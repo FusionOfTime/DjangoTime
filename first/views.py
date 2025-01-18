@@ -1,10 +1,16 @@
 import ast
 from urllib.parse import unquote
 
+from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from datetime import datetime
 import random
+
+from first.forms import StringInputForm
+from first.models import StringRequest
 
 history = []
 
@@ -102,5 +108,82 @@ def new_expression(request):
         return render(request, "new_expression.html", {
             "message": "Для добавления выражения используйте URL с параметром ?expr=выражение"
         })
+def analyze_string(input_str):
+    words = []
+    numbers = []
+    current_word = ""
+    current_number = ""
+    for char in input_str:
+        if char.isalnum():
+            if char.isdigit():
+                current_number += char
+            else:
+                 if current_number:
+                     numbers.append(current_number)
+                     current_number = ""
+                 current_word += char
+        elif char.isspace():
+            if current_word:
+                words.append(current_word)
+                current_word = ""
+            if current_number:
+                numbers.append(current_number)
+                current_number = ""
+    if current_word:
+        words.append(current_word)
+    if current_number:
+        numbers.append(current_number)
+    return words, numbers
 
+
+@login_required
+def str2words_page(request):
+    if request.method == 'POST':
+        form = StringInputForm(request.POST)
+        if form.is_valid():
+            input_str = form.cleaned_data['input_string']
+            words, numbers = analyze_string(input_str)
+            word_count = len(words)
+            char_count = len(input_str)
+            current_time = datetime.now()
+            StringRequest.objects.create(
+                user=request.user,
+                request_date=current_time.date(),
+                request_time=current_time.time(),
+                input_string=input_str,
+                word_count=word_count,
+                char_count=char_count,
+            )
+            context = {
+                'words': words,
+                'numbers': numbers,
+                'word_count': word_count,
+                'char_count': char_count,
+                'form': form,
+            }
+            return render(request, "str2words.html", context)
+    else:
+        form = StringInputForm()
+    return render(request, "str2words.html", {'form': form})
+
+
+@login_required
+def str_history_page(request):
+    history = StringRequest.objects.filter(user=request.user).order_by('-request_date','-request_time')
+    return render(request, 'str_history.html', {'history': history})
+
+def login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('/')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'login.html', {'form': form})
+
+def logout_view(request):
+    logout(request)
+    return redirect('/')
 

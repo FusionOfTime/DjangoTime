@@ -29,4 +29,8 @@ urlpatterns = [
     path('delete/', views.delete_last_expression),
     path('clear/', views.clear_history),
     path('new/', views.new_expression),
+    path('str2words/', views.str2words_page),
+    path('str_history/', views.str_history_page),
+    path('login/', views.login_view),
+    path('logout/', views.logout_view),
 ]
