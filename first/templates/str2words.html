@@ -1,59 +1,35 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Курс "Промышленное программирование"</title>
-</head>
-<body>
-    <h1>Menu</h1>
-        <ol>
-            <li><a href="/"><h3>MainPage</h3></a></li>
-            <li><a href="/time/"><h3>TimePage</h3></a></li>
-            <li><a href="/calc/"><h3>CalcPage</h3></a></li>
-            <li><a href="/expression/"><h3>ExpressionPage</h3></a></li>
-            <li><a href="/history/"><h3>HistoryPage</h3></a></li>
-            <li><a href="/delete/"><h3>DeletePage</h3></a></li>
-           <li><a href="/clear/"><h3>ClearPage</h3></a></li>
-           <li><a href="/new/"><h3>NewExPage</h3></a></li>
-             {% if user.is_authenticated %}
-                  <li><a href="/str2words/"><h3>String to words</h3></a></li>
-                   <li><a href="/str_history/"><h3>String history</h3></a></li>
-                  <li><a href="/logout/"><h3>Logout</h3></a></li>
-              {% else %}
-                   <li><a href="/login/"><h3>Login</h3></a></li>
-             {% endif %}
-        </ol>
-     <hr>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Анализировать</button>
-    </form>
+{% extends 'includes/base.html' %}
+{% block title %}Курс "Промышленное программирование"{% endblock %}
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Анализировать</button>
+</form>
 
-    {% if words %}
-        <h2>Слова:</h2>
-        <ul>
-            {% for word in words %}
-                <li>{{ word }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+{% if words %}
+    <h2>Слова:</h2>
+    <ul>
+        {% for word in words %}
+            <li>{{ word }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
 
-     {% if numbers %}
-        <h2>Числа:</h2>
-        <ul>
-            {% for number in numbers %}
-                <li>{{ number }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+{% if numbers %}
+    <h2>Числа:</h2>
+    <ul>
+        {% for number in numbers %}
+            <li>{{ number }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
 
-    {% if word_count %}
-        <p>Всего слов: {{ word_count }}</p>
-    {% endif %}
+{% if word_count %}
+    <p>Всего слов: {{ word_count }}</p>
+{% endif %}
 
-     {% if char_count %}
-        <p>Всего символов: {{ char_count }}</p>
-    {% endif %}
-</body>
-</html>
+ {% if char_count %}
+    <p>Всего символов: {{ char_count }}</p>
+{% endif %}
+{% endblock %}

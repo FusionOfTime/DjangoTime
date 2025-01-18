@@ -1,31 +1,5 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Курс "Промышленное программирование"</title>
-</head>
-<body>
-    <h1>Menu</h1>
-    <ol>
-        <li><a href="/"><h3>MainPage</h3></a></li>
-        <li><a href="/time/"><h3>TimePage</h3></a></li>
-        <li><a href="/calc/"><h3>CalcPage</h3></a></li>
-        <li><a href="/expression/"><h3>ExpressionPage</h3></a></li>
-        <li><a href="/history/"><h3>HistoryPage</h3></a></li>
-         <li><a href="/delete/"><h3>DeletePage</h3></a></li>
-       <li><a href="/clear/"><h3>ClearPage</h3></a></li>
-       <li><a href="/new/"><h3>NewExPage</h3></a></li>
-        {% if user.is_authenticated %}
-     <li><a href="/str2words/"><h3>String to words</h3></a></li>
-     <li><a href="/str_history/"><h3>String history</h3></a></li>
-     <li><a href="/logout/"><h3>Logout</h3></a></li>
-    {% else %}
-      <li><a href="/login/"><h3>Login</h3></a></li>
-    {% endif %}
-    </ol>
-
-    <hr>
-
-    <h1>Сгенерированное выражение: {{ expression }} = {{ result }}</h1>
-</body>
-</html>
+{% extends 'includes/base.html' %}
+{% block title %}Курс "Промышленное программирование"{% endblock %}
+{% block content %}
+<h1>Сгенерированное выражение: {{ expression }} = {{ result }}</h1>
+{% endblock %}
