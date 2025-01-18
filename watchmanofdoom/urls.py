@@ -17,13 +17,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from first.views import index_page, time_page, calc_page, expression_page, history_page
+from first import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index_page),
-    path('time/', time_page),
-    path('calc/', calc_page),
-    path('expression/', expression_page),
-    path('history/', history_page)
+    path('', views.index_page),
+    path('time/', views.time_page),
+    path('calc/', views.calc_page),
+    path('expression/', views.expression_page),
+    path('history/', views.history_page),
+    path('delete/', views.delete_last_expression),
+    path('clear/', views.clear_history),
+    path('new/', views.new_expression),
 ]

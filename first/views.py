@@ -1,3 +1,6 @@
+import ast
+from urllib.parse import unquote
+
 from django.http import HttpResponse
 from django.shortcuts import render
 from datetime import datetime
@@ -69,4 +72,35 @@ def history_page(request):
         'history': history,
     }
     return render(request, "history.html", context)
+# Часть 1: Удаление последнего выражения
+def delete_last_expression(request):
+    if history:
+        history.pop()
+    return render(request, "delete.html")
+
+
+# Часть 2: Очистка истории
+def clear_history(request):
+    history.clear()
+    return render(request, "clear.html")
+
+
+
+# Часть 3: Добавление нового выражения
+def new_expression(request):
+    expr_param = request.GET.get('expr')
+
+    if expr_param is not None:
+        try:
+            expr_param = unquote(expr_param)
+            result = eval(expr_param)
+            history.append({'expression': expr_param, 'result': result})
+            return render(request, 'new_expression.html', {'message': "Ваше выражение добавлено"})
+        except Exception:
+            return render(request, 'new_expression.html', {'message': "Некорректный формат выражения"})
+    else:
+        return render(request, "new_expression.html", {
+            "message": "Для добавления выражения используйте URL с параметром ?expr=выражение"
+        })
+
 

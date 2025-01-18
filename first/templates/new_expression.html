@@ -7,34 +7,16 @@
 <body>
     <h1>Menu</h1>
     <ol>
-        <li><a href="/"><h3>MainPage</h3></a></li>
+         <li><a href="/"><h3>MainPage</h3></a></li>
         <li><a href="/time/"><h3>TimePage</h3></a></li>
          <li><a href="/calc/"><h3>CalcPage</h3></a></li>
         <li><a href="/expression/"><h3>ExpressionPage</h3></a></li>
         <li><a href="/history/"><h3>HistoryPage</h3></a></li>
          <li><a href="/delete/"><h3>DeletePage</h3></a></li>
-       <li><a href="/clear/"><h3>ClearPage</h3></a></li>
+        <li><a href="/clear/"><h3>ClearPage</h3></a></li>
        <li><a href="/new/"><h3>NewExPage</h3></a></li>
     </ol>
-
     <hr>
-
-    <h1>История вычислений</h1>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Выражение</th>
-                <th>Результат</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in history %}
-            <tr>
-                <td>{{ item.expression }}</td>
-                <td>{{ item.result }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <p> {{ message }}</p>
 </body>
 </html>
