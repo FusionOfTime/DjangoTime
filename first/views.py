@@ -4,13 +4,13 @@ from urllib.parse import unquote
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from datetime import datetime
 import random
 
 from first.forms import StringInputForm
-from first.models import StringRequest
+from first.models import StringRequest, StudentStats
 
 history = []
 
@@ -186,4 +186,32 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('/')
+
+@login_required
+def clicker_page(request):
+    try:
+       student_stats = StudentStats.objects.get(user=request.user)
+    except StudentStats.DoesNotExist:
+       student_stats = StudentStats.objects.create(user=request.user)
+    context = {
+       'student_stats': student_stats,
+    }
+    return render(request, 'clicker.html', context)
+
+@login_required
+def save_stats(request):
+    if request.method == "POST":
+        try:
+            hp = int(request.POST.get('hp'))
+            iq = int(request.POST.get('iq'))
+            happiness = int(request.POST.get('happiness'))
+            student_stats = StudentStats.objects.get(user=request.user)
+            student_stats.hp = hp
+            student_stats.iq = iq
+            student_stats.happiness = happiness
+            student_stats.save()
+            return JsonResponse({'status': 'ok'})
+        except Exception:
+            return JsonResponse({'status': 'error'})
+    return JsonResponse({'status': 'error'})
 

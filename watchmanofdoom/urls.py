@@ -31,6 +31,8 @@ urlpatterns = [
     path('new/', views.new_expression),
     path('str2words/', views.str2words_page),
     path('str_history/', views.str_history_page),
+    path('clicker/', views.clicker_page),
+    path('save_stats/', views.save_stats),
     path('login/', views.login_view),
     path('logout/', views.logout_view),
 ]
